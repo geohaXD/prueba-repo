@@ -1,32 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visor de Capturas</title>
+  <title>Vista de Pestañas</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; }
-    img { max-width: 90%; height: auto; margin: 20px; border: 1px solid #ccc; }
+    .capture { margin: 10px; }
+    img { max-width: 100%; }
   </style>
 </head>
 <body>
-  <h2>Capturas de pestañas</h2>
-  <div>
-    <h3>Pestaña 1</h3>
-    <img id="tab1" src="" alt="Sin captura aún">
-  </div>
-  <div>
-    <h3>Pestaña 2</h3>
-    <img id="tab2" src="" alt="Sin captura aún">
-  </div>
+  <h1>Vista de Pestañas Capturadas</h1>
+  <div id="capturesContainer"></div>
+
   <script>
-    const port = chrome.runtime.connect({ name: "capturePort" });
-    port.onMessage.addListener((msg) => {
-      if (msg.tabId === 1) {
-        document.getElementById("tab1").src = msg.dataUrl;
-      } else if (msg.tabId === 2) {
-        document.getElementById("tab2").src = msg.dataUrl;
-      }
+    // Obtener las capturas del almacenamiento local
+    chrome.storage.local.get(["captures"], (data) => {
+      const captures = data.captures || [];
+      const container = document.getElementById("capturesContainer");
+      
+      captures.forEach((capture) => {
+        const div = document.createElement("div");
+        div.className = "capture";
+        
+        const title = document.createElement("h2");
+        title.textContent = capture.tab;
+        
+        const img = document.createElement("img");
+        img.src = capture.image;
+        
+        div.appendChild(title);
+        div.appendChild(img);
+        
+        container.appendChild(div);
+      });
     });
   </script>
 </body>

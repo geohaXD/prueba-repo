@@ -6,13 +6,18 @@
   <title>Seleccionar Pestañas</title>
   <style>
     body { font-family: Arial, sans-serif; padding: 10px; }
-    button { margin-top: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
+    button { margin: 10px; padding: 10px; background-color: #4CAF50; color: white; border: none; cursor: pointer; }
     button:hover { background-color: #45a049; }
+    .info { margin-bottom: 10px; }
   </style>
 </head>
 <body>
-  <h2>Seleccionar pestañas</h2>
-  <button id="captureBtn">Abrir visor</button>
+  <h2>Seleccionar pestañas para capturar</h2>
+  <div class="info">
+    <p>Pestañas seleccionadas: <span id="selectedTabs">0</span>/2</p>
+  </div>
+  <button id="selectTabBtn">Tomar capturas de esta pestaña</button>
+  <button id="viewBtn" disabled>Mostrar vista</button>
   <script src="popup.js"></script>
 </body>
 </html>

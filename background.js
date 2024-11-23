@@ -1,17 +1,22 @@
-let tabsToCapture = [];
-
-chrome.tabs.onActivated.addListener(() => {
-  if (tabsToCapture.length > 0) {
-    chrome.tabs.captureVisibleTab(null, { format: "jpeg", quality: 80 }, (dataUrl) => {
-      tabsToCapture.forEach((tabId, index) => {
-        chrome.runtime.sendMessage({ tabId: index + 1, dataUrl });
+// Escuchar mensajes del popup
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+    if (message.type === "startCapturing") {
+      const selectedTabs = message.tabs;
+      
+      // Comienza a capturar las pestañas
+      selectedTabs.forEach((tab, index) => {
+        chrome.tabs.captureVisibleTab(tab.id, { format: "png" }, (dataUrl) => {
+          // Guardar la captura en el almacenamiento
+          chrome.storage.local.get("captures", (data) => {
+            let captures = data.captures || [];
+            captures.push({ tab: tab.title, image: dataUrl });
+            
+            chrome.storage.local.set({ captures }, () => {
+              console.log(`Captura de la pestaña "${tab.title}" guardada.`);
+            });
+          });
+        });
       });
-    });
-  }
-});
-
-chrome.runtime.onConnect.addListener((port) => {
-  if (port.name === "capturePort") {
-    console.log("Visor conectado");
-  }
-});
+    }
+  });
+  

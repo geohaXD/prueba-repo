@@ -1,9 +1,11 @@
 {
     "manifest_version": 3,
-    "name": "Captura de pestañas",
+    "name": "Capturador de Pestañas",
     "version": "1.0",
-    "permissions": ["tabs", "activeTab", "scripting"],
-    "host_permissions": ["http://*/*", "https://*/*"],
+    "permissions": ["tabs", "activeTab", "storage", "scripting"],
+    "background": {
+      "service_worker": "background.js"
+    },
     "action": {
       "default_popup": "popup.html",
       "default_icon": {
@@ -12,8 +14,6 @@
         "128": "image/icon3.png"
       }
     },
-    "background": {
-      "service_worker": "background.js"
-    }
+    "host_permissions": ["<all_urls>"]
   }
   
