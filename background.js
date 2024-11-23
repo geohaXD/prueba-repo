@@ -1,10 +1,17 @@
-chrome.runtime.onInstalled.addListener(() => {
-    console.log("Extensión instalada correctamente.");
+let tabsToCapture = [];
+
+chrome.tabs.onActivated.addListener(() => {
+  if (tabsToCapture.length > 0) {
+    chrome.tabs.captureVisibleTab(null, { format: "jpeg", quality: 80 }, (dataUrl) => {
+      tabsToCapture.forEach((tabId, index) => {
+        chrome.runtime.sendMessage({ tabId: index + 1, dataUrl });
+      });
+    });
+  }
 });
 
-// Captura la pestaña activa cada 30 segundos
-setInterval(() => {
-    chrome.tabs.captureVisibleTab(null, { format: "jpeg", quality: 80 }, (dataUrl) => {
-        console.log("Captura de pestaña:", dataUrl);
-    });
-}, 30000);
+chrome.runtime.onConnect.addListener((port) => {
+  if (port.name === "capturePort") {
+    console.log("Visor conectado");
+  }
+});

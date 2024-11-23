@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visor de Capturas</title>
+  <style>
+    body { font-family: Arial, sans-serif; text-align: center; }
+    img { max-width: 90%; height: auto; margin: 20px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h2>Capturas de pestañas</h2>
+  <div>
+    <h3>Pestaña 1</h3>
+    <img id="tab1" src="" alt="Sin captura aún">
+  </div>
+  <div>
+    <h3>Pestaña 2</h3>
+    <img id="tab2" src="" alt="Sin captura aún">
+  </div>
+  <script>
+    const port = chrome.runtime.connect({ name: "capturePort" });
+    port.onMessage.addListener((msg) => {
+      if (msg.tabId === 1) {
+        document.getElementById("tab1").src = msg.dataUrl;
+      } else if (msg.tabId === 2) {
+        document.getElementById("tab2").src = msg.dataUrl;
+      }
+    });
+  </script>
+</body>
+</html>
