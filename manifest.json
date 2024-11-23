@@ -1,0 +1,26 @@
+{
+    "manifest_version": 3,
+    "name": "Capturador de Pestañas",
+    "version": "1.0",
+    "description": "Extensión para capturar contenido de dos pestañas y enviarlo a un servidor.",
+    "permissions": [
+      "tabs",
+      "activeTab",
+      "scripting"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "host_permissions": [
+      "<all_urls>"
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": {
+        "16": "image/icon1.png",
+        "48": "image/icon2.png",
+        "128": "image/icon3.png"
+      }
+    }
+  }
+  
